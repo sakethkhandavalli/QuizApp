@@ -1,0 +1,12 @@
+<% if params['flag']==0 %>
+  <h3>Correct Answer</h3>
+  <% State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).update_attribute(:score , State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).score + 1) %>
+<% else %>
+  <h3>Wrong Answer</h3>
+<% end %>
+
+<% State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).update_attribute(:index , State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).index + 1) %>
+
+<h3><%= 'Score : ' + State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).score.to_s %></h3><br/><br/>
+<%= link_to 'Next Question' , '/questions' %>&emsp;
+<%= link_to 'Back to Subgenres' , '/subgenres' %>

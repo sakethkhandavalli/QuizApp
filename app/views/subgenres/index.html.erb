@@ -1,0 +1,61 @@
+<p id="notice"><%= notice %></p>
+
+<h1 style="text-align:center"><%= $genre_name %></h1><br/>
+<h3><%= link_to 'Genre Leaderboard' , '/glboard' %>
+
+<% if $current_user.Admin? == false %>
+  <% score = 0 %>
+  <% for i in Subgenre.all() %>
+    <% if State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre) == nil %>
+      <% State.create(user_id: session['user_id'] , subgenre_id: $subgenre , score: 0 , index: 0) %>
+    <% end %>
+    <% if State.find_by(user_id: session['user_id'] , subgenre_id: i.id) != nil and i.genre_id.to_i == $genre.to_i %>
+      <% score = score + State.find_by(user_id: session['user_id'] , subgenre_id: i.id).score %>
+    <% end %>
+  <% end %>
+  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<%= 'Score in this Genre : ' + score.to_s %></h3><br/><br/>
+<% end %>
+
+<table  class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subgenres.each do |subgenre| %>
+      <% if (subgenre.genre_id).to_i - ($genre).to_i == 0 %>
+          <tr>
+            <td><%= subgenre.name %></td>
+            <td><%= subgenre.description %></td>
+            <% if $current_user.Admin? == false %>
+              <td><%= link_to('Resume Quiz', {:controller => 'questions', :action => 'index' , :subgenre => subgenre.id , :subgenre_name => subgenre.name}) %></td>&emsp;
+              <td><%= link_to('Start Quiz', {:controller => 'questions', :action => 'index' , :f => 1 , :subgenre => subgenre.id , :subgenre_name => subgenre.name}) %></td>&emsp;
+            <% else %>
+              <td><%= link_to('Show', {:controller => 'questions', :action => 'index' , :subgenre => subgenre.id , :subgenre_name => subgenre.name}) %></td>&emsp;
+            <% end %>
+            <% if $current_user.Admin? %>
+              <td><%= link_to 'Edit', edit_subgenre_path(subgenre) %></td>&emsp;
+            <% end %>
+            <% if $current_user.Admin? %>
+              <td><%= link_to 'Destroy', subgenre, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
+          </tr>
+      <% else %>
+          <% i = 1 %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<h4 style="text-align:center"><%= link_to 'Back to Genres' , '/genres' %>
+<% if $current_user.Admin? %>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<%= link_to('New Subgenre', new_subgenre_path) %></h3>
+<% else %>
+</h3>
+<% end %>

@@ -1,0 +1,72 @@
+<%= form_with(model: question, local: true) do |form| %>
+  <% if question.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
+
+      <ul>
+      <% question.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <h1><%= params['flag'] %></h1>
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :question_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :subgenre_id %>
+    <%= form.number_field :subgenre_id, id: :question_subgenre_id, disabled: true, value: $subgenre %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Question_Type %>
+    <%= form.text_field :qtype, id: :question_qtype %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Option1 %>
+    <%= form.text_field :opt1, id: :question_opt1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Option2 %>
+    <%= form.text_field :opt2, id: :question_opt2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Option3 %>
+    <%= form.text_field :opt3, id: :question_opt3 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Option4 %>
+    <%= form.text_field :opt4, id: :question_opt4 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Correct1 %>
+    <%= form.text_field :crt1, id: :question_crt1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Correct2 %>
+    <%= form.text_field :crt2, id: :question_crt2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Correct3 %>
+    <%= form.text_field :crt3, id: :question_crt3 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :Correct4 %>
+    <%= form.text_field :crt4, id: :question_crt4 %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

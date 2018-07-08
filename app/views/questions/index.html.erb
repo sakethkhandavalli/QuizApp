@@ -1,0 +1,76 @@
+<p id="notice"><%= notice %></p>
+
+<h1 style="text-align:center"><%= $subgenre_name %></h1><br/><br/>
+  <h3><%= link_to 'Subgenre Leaderboard', '/subglboard' %>
+    <% if $current_user.Admin? == false %>
+      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<%= 'Score in this Subgenre: ' + State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).score.to_s %></h3><br/><br/>
+    <% else %>
+      </h3>
+    <% end %>
+
+<% arr = [] %>
+<% @questions.each do |question| %>
+  <% if question.subgenre_id.to_i == $subgenre.to_i %>
+    <% arr.push(question) %>
+  <% end %>
+<% end %>
+
+<% no = 1 %>
+
+<% if $current_user.Admin? == false %>
+  <% if State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre) != nil and State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).index == arr.length %>
+    <% y = 1 %>
+  <% else %>
+    <% subgenre = Subgenre.find_by(id: $subgenre) %>
+    <% s = State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre) %>
+    <%# q = Question.find_by(subgenre_id: s.subgenre_id) %>
+    <% ret = s.index + 1 %>
+    <% q = arr[s.index] %>
+    <div class='question'>
+      <%= 'Q' + ret.to_s + ' ) '+ q.description + ' ( ' + (q.qtype).capitalize() + ' Option Correct Question )' %><br/><br/>
+      <%= form_tag(test_path(q.crt1,q.crt2,q.crt3,q.crt4), method: "get") do |form| %>
+        <div class="field">
+          <%= check_box_tag 'answer_ids[]', '1',false %>
+          <%= q.opt1 %>
+        </div>
+        <div class="field"``>
+          <%= check_box_tag 'answer_ids[]', '2',false %>
+          <%= q.opt2 %>
+        </div>
+        <div class="field">
+          <%= check_box_tag 'answer_ids[]', '3',false %>
+          <%= q.opt3 %>
+        </div>
+        <div class="field">
+          <%= check_box_tag 'answer_ids[]', '4',false %>
+          <%= q.opt4 %>
+        </div>
+        <div class='actions'>
+          <%= submit_tag("Submit" , class: "btn-submit")%><br/><br/>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <% for q in arr %>
+    <% if (q.subgenre_id).to_i - ($subgenre).to_i == 0 %>
+        <%= 'Q' + no.to_s + ') ' + q.description + ' (' + q.qtype + ') '%><br/>
+        <% no = no + 1 %>
+        <%= link_to 'Show', q %>&emsp;
+        <%= link_to 'Edit', edit_question_path(q) %>&emsp;
+        <%= link_to 'Destroy', q, method: :delete, data: { confirm: 'Are you sure?' } %><br/><br/><br/>
+    <% end %>
+  <% end %>
+<% end %>
+
+<br>
+
+<% if $current_user.Admin? == false and State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre) != nil and State.find_by(user_id: session['user_id'] , subgenre_id: $subgenre).index == arr.length %>
+    <h3> End of quiz </h3>
+<% end %>
+<h4 style="text-align:center"><%= link_to 'Back to Subgenres' , '/subgenres' %>
+<% if $current_user.Admin? %>
+  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<%= link_to 'New Question', new_question_path %></h4>
+<% else %>
+  </h4>
+<% end %>

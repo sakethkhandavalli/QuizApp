@@ -1,0 +1,33 @@
+<h1><%= 'SubGenre Leaderboard' %></h1>
+
+<% arr = Hash.new %>
+
+<table  class="table table-striped table-hover">
+<tbody>
+  <tr>
+    <td>Username</td>
+    <td></td>
+    <td>Score</td>
+  </tr>
+  <% for i in User.all() %>
+    <% if i.role!='Admin' and State.find_by(user_id: i.id , subgenre_id: $subgenre) != nil %>
+      <% arr[i.id] = State.find_by(user_id: i.id , subgenre_id: $subgenre).score %>
+    <% end %>
+  <% end %>
+
+  <% arr = arr.sort{ |l, r| l[1]<=>r[1] } %>
+
+  <% n = arr.length - 1%>
+
+  <% while n>=0 %>
+    <tr>
+      <td><%= User.find_by(id: arr[n][0] ).first_name %><td/>
+      <td><%= arr[n][1] %></td>
+      <% n = n - 1 %>
+    </tr>
+  <% end %>
+
+</tbody>
+</table>
+
+<%= link_to 'Back' , '/questions' %>&emsp;

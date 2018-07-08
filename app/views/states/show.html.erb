@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @state.user_id %>
+</p>
+
+<p>
+  <strong>Subgenre:</strong>
+  <%= @state.subgenre_id %>
+</p>
+
+<p>
+  <strong>Index:</strong>
+  <%= @state.index %>
+</p>
+
+<p>
+  <strong>Score:</strong>
+  <%= @state.score %>
+</p>
+
+<%= link_to 'Edit', edit_state_path(@state) %> |
+<%= link_to 'Back', states_path %>

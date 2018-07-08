@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyText
+  subgenre_id: 1
+  qtype: MyString
+  opt1: MyString
+  opt2: MyString
+  opt3: MyString
+  opt4: MyString
+  crt1: MyString
+  crt2: MyString
+  crt3: MyString
+  crt4: MyString
+
+two:
+  description: MyText
+  subgenre_id: 1
+  qtype: MyString
+  opt1: MyString
+  opt2: MyString
+  opt3: MyString
+  opt4: MyString
+  crt1: MyString
+  crt2: MyString
+  crt3: MyString
+  crt4: MyString
